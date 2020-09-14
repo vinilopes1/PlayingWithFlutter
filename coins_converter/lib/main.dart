@@ -36,25 +36,25 @@ class _HomeState extends State<Home> {
   double euro;
   double bitcoin;
 
-  void _clearAll(){
+  void _clearAll() {
     realController.text = "";
     dolarController.text = "";
     euroController.text = "";
   }
 
   void _realChanged(String text) {
-    if(text.isEmpty) {
+    if (text.isEmpty) {
       _clearAll();
       return;
     }
     double real = double.parse(text);
     dolarController.text = (real / dolar).toStringAsFixed(2);
     euroController.text = (real / euro).toStringAsFixed(2);
-    bitcoinController.text = (real/bitcoin).toStringAsFixed(5);
+    bitcoinController.text = (real / bitcoin).toStringAsFixed(5);
   }
 
   void _euroChanged(String text) {
-    if(text.isEmpty) {
+    if (text.isEmpty) {
       _clearAll();
       return;
     }
@@ -62,11 +62,10 @@ class _HomeState extends State<Home> {
     realController.text = (euro * this.euro).toStringAsFixed(2);
     dolarController.text = (euro * this.euro / dolar).toStringAsFixed(2);
     bitcoinController.text = (euro * this.euro / bitcoin).toStringAsFixed(5);
-
   }
 
   void _dolarChanged(String text) {
-    if(text.isEmpty) {
+    if (text.isEmpty) {
       _clearAll();
       return;
     }
@@ -76,8 +75,8 @@ class _HomeState extends State<Home> {
     bitcoinController.text = (dolar * this.dolar / bitcoin).toStringAsFixed(5);
   }
 
-  void _bitcoinChanged(String text){
-    if(text.isEmpty) {
+  void _bitcoinChanged(String text) {
+    if (text.isEmpty) {
       _clearAll();
       return;
     }
@@ -117,7 +116,8 @@ class _HomeState extends State<Home> {
                 } else {
                   dolar = snapshot.data["results"]["currencies"]["USD"]["buy"];
                   euro = snapshot.data["results"]["currencies"]["EUR"]["buy"];
-                  bitcoin = snapshot.data["results"]["currencies"]["BTC"]["buy"];
+                  bitcoin =
+                      snapshot.data["results"]["currencies"]["BTC"]["buy"];
 
                   return SingleChildScrollView(
                     padding: EdgeInsets.all(10.0),
@@ -138,7 +138,8 @@ class _HomeState extends State<Home> {
                         builderTextField(
                             "Dolar", "US\$", dolarController, _dolarChanged),
                         Divider(),
-                        builderTextField("Bitcoin", "BTC", bitcoinController, _bitcoinChanged)
+                        builderTextField("Bitcoin", "BTC", bitcoinController,
+                            _bitcoinChanged)
                       ],
                     ),
                   );
