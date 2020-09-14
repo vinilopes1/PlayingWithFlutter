@@ -1,6 +1,6 @@
 # coins_converter
 
-An application for converting currencies into Euro, Dolar and Real, using a Rest API.
+An application for converting currencies into Euro, Dolar, Bitcoin and Real, using a Rest API.
 
 ## Getting Started
 
