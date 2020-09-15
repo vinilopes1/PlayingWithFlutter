@@ -20,6 +20,9 @@ class _HomeState extends State<Home> {
 
   final _taskController = TextEditingController();
 
+  Map<String, dynamic> _lastRemoved;
+  int _lastRemovedIndex;
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +43,25 @@ class _HomeState extends State<Home> {
       _toDoList.add(task);
       _saveData();
     });
+  }
+
+  Future<Null> _refresh() async {
+    await Future.delayed(Duration(seconds: 1));
+
+    setState(() {
+      _toDoList.sort((a, b) {
+        if (a["check"] && !b["check"])
+          return 1;
+        else if (!a["check"] && b["check"])
+          return -1;
+        else
+          return 0;
+      });
+
+      _saveData();
+    });
+
+    return Null;
   }
 
   @override
@@ -73,10 +95,12 @@ class _HomeState extends State<Home> {
             ),
           ),
           Expanded(
-              child: ListView.builder(
-                  padding: EdgeInsets.only(top: 2.0),
-                  itemCount: _toDoList.length,
-                  itemBuilder: buidItem))
+              child: RefreshIndicator(
+                  onRefresh: _refresh,
+                  child: ListView.builder(
+                      padding: EdgeInsets.only(top: 2.0),
+                      itemCount: _toDoList.length,
+                      itemBuilder: buidItem)))
         ],
       ),
     );
@@ -84,29 +108,53 @@ class _HomeState extends State<Home> {
 
   Widget buidItem(context, index) {
     return Dismissible(
-        key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
-        background: Container(
-          color: Colors.red,
-          alignment: Alignment(-0.9, 0),
-          child: Icon(
-            Icons.delete,
-            color: Colors.white,
-          ),
+      key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment(-0.9, 0),
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
         ),
-        direction: DismissDirection.startToEnd,
-        child: CheckboxListTile(
-          title: Text(_toDoList[index]["title"]),
-          value: _toDoList[index]["check"],
-          secondary: CircleAvatar(
-            child: Icon(_toDoList[index]["check"] ? Icons.check : Icons.error),
-          ),
-          onChanged: (c) {
-            setState(() {
-              _toDoList[index]["check"] = c;
-              _saveData();
-            });
-          },
-        ));
+      ),
+      direction: DismissDirection.startToEnd,
+      child: CheckboxListTile(
+        title: Text(_toDoList[index]["title"]),
+        value: _toDoList[index]["check"],
+        secondary: CircleAvatar(
+          child: Icon(_toDoList[index]["check"] ? Icons.check : Icons.error),
+        ),
+        onChanged: (c) {
+          setState(() {
+            _toDoList[index]["check"] = c;
+            _saveData();
+          });
+        },
+      ),
+      onDismissed: (direction) {
+        setState(() {
+          _lastRemoved = Map.from(_toDoList[index]);
+          _lastRemovedIndex = index;
+          _toDoList.removeAt(index);
+
+          _saveData();
+
+          final snack = SnackBar(
+              content: Text("Task \"${_lastRemoved["title"]}\" was removed!"),
+              action: SnackBarAction(
+                  label: "Undo",
+                  onPressed: () {
+                    setState(() {
+                      _toDoList.insert(_lastRemovedIndex, _lastRemoved);
+                      _saveData();
+                    });
+                  }),
+              duration: Duration(seconds: 2));
+          Scaffold.of(context).removeCurrentSnackBar();
+          Scaffold.of(context).showSnackBar(snack);
+        });
+      },
+    );
   }
 
   Future<File> _getFile() async {
