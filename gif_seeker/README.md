@@ -2,15 +2,12 @@
 
 The application searches for gifs on the internet, in addition to being able to download it to the device.
 
-## Getting Started
+## Screens
+![alt text](https://raw.githubusercontent.com/vinilopes1/PlayingWithFlutter/master/counter_peoples/images/screen01.png)
+![alt text](https://raw.githubusercontent.com/vinilopes1/PlayingWithFlutter/master/counter_peoples/images/screen02.png)
+![alt text](https://raw.githubusercontent.com/vinilopes1/PlayingWithFlutter/master/counter_peoples/images/screen03.png)
+![alt text](https://raw.githubusercontent.com/vinilopes1/PlayingWithFlutter/master/counter_peoples/images/screen04.png)
+![alt text](https://raw.githubusercontent.com/vinilopes1/PlayingWithFlutter/master/counter_peoples/images/screen05.png)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
